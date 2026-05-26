@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyWeather - Previsão do Tempo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="search-bar">
+                <input type="text" id="city-search-input" placeholder="Buscar cidade...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+                <button id="gps-button"><i class="fas fa-location-dot"></i></button>
+            </div>
+            <button class="settings-button" id="open-settings-button"><i class="fas fa-cog"></i></button>
+        </header>
+
+        <main id="home-screen" class="screen">
+            <section class="card current-weather">
+                <h2 class="city" id="current-city">Carregando...</h2>
+                <p class="date" id="current-date"></p>
+                <div class="temperature">
+                    <i id="current-weather-icon" class="fas fa-sun"></i>
+                    <span id="current-temp">--°C</span>
+                </div>
+                <p class="condition" id="current-condition">Ensolarado</p>
+
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <i class="fas fa-thermometer-half"></i>
+                        Sensação
+                        <span id="feels-like">--°C</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-tint"></i>
+                        Umidade
+                        <span id="humidity">--%</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-wind"></i>
+                        Vento
+                        <span id="wind-speed">-- km/h</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-sun"></i>
+                        Índice UV
+                        <span id="uv-index">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-cloud-showers-heavy"></i>
+                        Chuva
+                        <span id="rain-chance">--%</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-sunrise"></i>
+                        Nascer do Sol
+                        <span id="sunrise-time">--:--</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-sunset"></i>
+                        Pôr do Sol
+                        <span id="sunset-time">--:--</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-smog"></i>
+                        Qualidade do Ar
+                        <span id="air-quality">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card intelligent-alerts">
+                <h3 class="section-title">Alertas Inteligentes</h3>
+                <div id="intelligent-messages">
+                    <p>Carregando recomendações...</p>
+                </div>
+            </section>
+        </main>
+
+        <main id="week-screen" class="screen hidden">
+            <section class="card daily-forecast">
+                <h3 class="section-title">Previsão de 7 Dias</h3>
+                <div id="daily-forecast-list" class="daily-forecast-list">
+                    </div>
+            </section>
+        </main>
+
+        <main id="hourly-screen" class="screen hidden">
+            <section class="card hourly-forecast">
+                <h3 class="section-title">Previsão por Hora</h3>
+                <div id="hourly-forecast-list" class="hourly-forecast-list">
+                    </div>
+                <h4 class="section-title" style="margin-top: 20px;">Gráfico de Temperatura</h4>
+                <div id="temperature-graph" class="temperature-graph">
+                    </div>
+            </section>
+        </main>
+
+        <main id="alerts-screen" class="screen hidden">
+            <section class="card alerts-section">
+                <h3 class="section-title">Alertas Climáticos</h3>
+                <div id="weather-alerts">
+                    <p>Nenhum alerta climático ativo no momento.</p>
+                </div>
+            </section>
+        </main>
+
+        <div id="settings-modal-overlay" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Configurações</h2>
+                    <button class="modal-close-button" id="close-settings-button"><i class="fas fa-times"></i></button>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Tema do Aplicativo</h3>
+                    <div class="theme-grid" id="theme-selector">
+                        <div class="theme-item active" data-theme="ocean-blue">
+                            <div class="theme-color-box ocean-blue"></div>
+                            <span>Oceano Azul</span>
+                        </div>
+                        <div class="theme-item" data-theme="ice-white">
+                            <div class="theme-color-box ice-white"></div>
+                            <span>Branco Gelo</span>
+                        </div>
+                        <div class="theme-item" data-theme="night-black">
+                            <div class="theme-color-box night-black"></div>
+                            <span>Preto Noturno</span>
+                        </div>
+                        <div class="theme-item" data-theme="metallic-gray">
+                            <div class="theme-color-box metallic-gray"></div>
+                            <span>Cinza Metálico</span>
+                        </div>
+                        <div class="theme-item" data-theme="sunset-orange">
+                            <div class="theme-color-box sunset-orange"></div>
+                            <span>Pôr do Sol</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Geral</h3>
+                    <div class="setting-item">
+                        <span>Unidade de Temperatura</span>
+                        <div class="modal-options" id="unit-selector">
+                            <button class="modal-option-button active" data-unit="metric">Celsius (°C)</button>
+                            <button class="modal-option-button" data-unit="imperial">Fahrenheit (°F)</button>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span>Idioma</span>
+                        <div class="modal-options" id="language-selector">
+                            <button class="modal-option-button active" data-lang="pt">Português</button>
+                            <button class="modal-option-button" data-lang="en">English</button>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span>Sons do Aplicativo</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-sounds" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Animações da Interface</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-animations" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Permissão de Localização</span>
+                        <button class="modal-option-button" id="request-location-permission">Gerenciar</button>
+                    </div>
+                    <div class="setting-item">
+                        <span>Atualização Automática</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-auto-update" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Cidades</h3>
+                    <div class="setting-item">
+                        <span>Adicionar aos Favoritos</span>
+                        <button class="modal-option-button" id="manage-favorites">Favoritar Atual</button>
+                    </div>
+                    <div class="setting-item">
+                        <span>Cidades Recentes</span>
+                        <button class="modal-option-button" id="clear-recent-cities">Limpar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="#" class="nav-item active" data-screen="home">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="week">
+            <i class="fas fa-calendar-week"></i>
+            <span>Semana</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="hourly">
+            <i class="fas fa-clock"></i>
+            <span>Horários</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="alerts">
+            <i class="fas fa-bell"></i>
+            <span>Alertas</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="settings">
+            <i class="fas fa-cog"></i>
+            <span>Config.</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
