@@ -284,7 +284,7 @@ function getGeolocation() {
             },
             error => {
                 console.error('Erro ao obter localização:', error);
-                // Fallback automático para Belford Roxo
+                // Fallback automático
                 fetchWeatherData(-22.7661, -43.3992, 'Belford Roxo, RJ'); 
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
